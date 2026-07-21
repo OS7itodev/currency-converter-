@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+  background: #f2f6f5;
+}
+
+.header {
+  background: #14666d;
+  color: #fff;
+  text-align: center;
+  padding: 36px 20px;
+}
+
+.header h1 {
+  font-size: 30px;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+h3.title {
+  font-size: 22px;
+  color: #14666d;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #dfe7e6;
+  border-radius: 10px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h4 {
+  color: #14666d;
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #4b5563;
+  font-size: 14px;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.btn {
+  align-self: flex-start;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background: #e76f51;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: #d65a3d;
+}
+
+.output-box {
+  background: #fff;
+  border: 1px solid #dfe7e6;
+  border-radius: 10px;
+  padding: 22px;
+  margin-top: 30px;
+  min-height: 60px;
+}
+
+#output p {
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+@media (max-width: 720px) {
+  .header h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>Currency Converter</h1>
+</header>
+
+<main>
+  <h3 class="title">Tasks</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <h4>1. Currency Exchange</h4>
+      <p>Convert Egyptian pounds to dollars (1 dollar = 30.9 EGP).</p>
+      <button class="btn" onclick="runExchange()">Run</button>
+    </div>
+
+    <div class="card">
+      <h4>2. User Info &amp; Welcome</h4>
+      <p>Enter name, birth year, mobile and color. Validates input, calculates age, and shows a welcome message.</p>
+      <button class="btn" onclick="userInfo()">Run</button>
+    </div>
+
+    <div class="card">
+      <h4>3. Equal Function</h4>
+      <p>Takes three integers and returns how many are equal (0, 2 or 3).</p>
+      <button class="btn" onclick="runEqualFunc()">Run</button>
+    </div>
+
+    <div class="card">
+      <h4>4. Sum Values</h4>
+      <p>Keeps reading numbers until you enter 0 or the sum passes 50, then shows the total.</p>
+      <button class="btn" onclick="sumValues()">Run</button>
+    </div>
+
+    <div class="card">
+      <h4>5. Heading Tags</h4>
+      <p>Displays your message as headings h1 to h6 using a loop.</p>
+      <button class="btn" onclick="showHeadings()">Run</button>
+    </div>
+
+  </div>
+
+  <div class="output-box">
+    <div id="output"></div>
+    <div id="headings"></div>
+  </div>
+</main>
+
+<script>
+
+function exchangeEgyPound(pounds) {
+  return Math.round(pounds / 30.9 * 10) / 10;
+}
+
+function runExchange() {
+  var p = prompt("Enter number of Egyptian pounds:");
+  alert(p + " EGP = " + exchangeEgyPound(Number(p)) + " dollars");
+}
+
+function userInfo() {
+  var name = prompt("Enter your first name:");
+  var year = prompt("Enter your birth year:");
+  var mobile = prompt("Enter your mobile number:");
+  var color = prompt("Choose a color (red, green or blue):");
+
+  if (!isNaN(name)) { alert("First name should be characters not a number"); return; }
+  if (isNaN(mobile) || mobile.length != 11) { alert("Mobile number should be a number with length 11"); return; }
+  if (year <= 1900) { alert("Birth year should be more than 1900"); return; }
+  if (color != "red" && color != "green" && color != "blue") { alert("Color should be red or green or blue"); return; }
+
+  var age = new Date().getFullYear() - year;
+  var box = document.getElementById("output");
+  box.style.color = color;
+  box.innerHTML = "welcome dear " + name + "<br>your age is " + age + "<br>your mobile is " + mobile;
+}
+
+function equalFunc(a, b, c) {
+  if (a == b && b == c) return 3;
+  if (a == b || a == c || b == c) return 2;
+  return 0;
+}
+
+function runEqualFunc() {
+  var a = Number(prompt("Enter first integer:"));
+  var b = Number(prompt("Enter second integer:"));
+  var c = Number(prompt("Enter third integer:"));
+  alert(equalFunc(a, b, c));
+}
+
+function sumValues() {
+  var sum = 0;
+  while (true) {
+    var value = prompt("Enter a number:");
+    if (isNaN(value)) { alert("Please enter a number"); continue; }
+    if (Number(value) == 0) break;
+    sum = sum + Number(value);
+    if (sum > 50) break;
+  }
+  alert("The total sum is " + sum);
+}
+
+function showHeadings() {
+  var msg = prompt("Enter a message:");
+  var result = "";
+  for (var i = 1; i <= 6; i++) result = result + "<h" + i + ">" + msg + "</h" + i + ">";
+  document.getElementById("headings").innerHTML = result;
+}
+
+</script>
+
+</body>
+</html>
